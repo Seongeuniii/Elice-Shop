@@ -9,15 +9,31 @@ const selectProduct = () => {};
 
 const selectAllProduct = () => {};
 
-const updateQty = (productId, newQty) => {};
+const updateQty = (productId, newQty) => {
+    const targetProduct = state.cartList[productId];
+    const oldQty = parseInt(targetProduct.quantity);
+
+    if (newQty > oldQty) {
+        state.quantity += newQty - oldQty;
+        state.total += targetProduct.price * (newQty - oldQty);
+    } else {
+        state.quantity -= oldQty - newQty;
+        state.total -= targetProduct.price * (oldQty - newQty);
+    }
+
+    targetProduct.quantity = newQty;
+    localStorage.setItem('cart', JSON.stringify(state.cartList));
+};
 
 const deleteProduct = (productId) => {
-    if (cartList[productId][checked]) {
-        quantity -= cartList[productId].quantity;
-        total -= cartList[productId].total * cartList[productId].quantity;
+    const targetProduct = state.cartList[productId];
+
+    if (targetProduct.checked) {
+        state.quantity -= targetProduct.quantity;
+        state.total -= targetProduct.price * targetProduct.quantity;
     }
-    delete cartList[productId];
-    localStorage.setItem('cart', JSON.stringify(cart));
+    delete state.cartList[productId];
+    localStorage.setItem('cart', JSON.stringify(state.cartList));
 };
 
 const deleteAllProduct = () => {};
@@ -48,10 +64,11 @@ const initState = async () => {
     if (cartListFromLocalStorage) {
         state.cartList = cartListFromLocalStorage;
         const productInfo = await requestProductInfo();
+
         state.productInfo = createMap(productInfo, '_id');
         Object.keys(state.cartList).forEach((id) => {
             if (state.cartList[id].checked) {
-                state.quantity += state.cartList[id].quantity;
+                state.quantity += parseInt(state.cartList[id].quantity);
                 state.total +=
                     state.cartList[id].quantity * state.cartList[id].price;
             }

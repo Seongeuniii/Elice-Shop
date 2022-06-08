@@ -13,7 +13,8 @@ const productLayout = (productInfo, userAddToCart) => {
                     <p>
                         <input 
                             type='text'  
-                            class="qty" 
+                            class="qty"
+                            data-id=${productInfo._id}
                             placeholder=${userAddToCart.quantity} 
                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"/>
                         x ${productInfo.price}

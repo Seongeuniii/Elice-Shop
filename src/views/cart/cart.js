@@ -22,10 +22,7 @@ const drawCartList = () => {
     const productDom = Object.keys(state.cartList).reduce(
         (prev, productId) =>
             prev +
-            productLayout(
-                state.productInfo[productId],
-                state.cartList[productId],
-            ),
+            productLayout(state.productInfo[productId], state.cartList[productId]),
         '',
     );
     ref.cartContainer.innerHTML = productDom;
@@ -37,13 +34,34 @@ const drawCheckoutInfo = () => {
 };
 
 const setEvents = () => {
-    // 이벤트 위임
+    // 이벤트 위임 : 삭제 버튼
     ref.cartContainer.addEventListener('click', (e) => {
         if (e.target.classList.contains('remove')) {
             const productId = e.target.dataset.id;
-            deleteProduct(ref, productId);
-            ref.cartContainer.removeChild(document.getElementById(productId));
+            deleteProduct(productId);
+            drawCartList();
+            drawCheckoutInfo();
+
+            // ref.cartContainer.removeChild(document.getElementById(productId));
         }
+    });
+
+    // 이벤트 위임 : 수량 변경
+    ref.cartContainer.addEventListener('input', (e) => {
+        if (e.target.classList.contains('qty')) {
+            const productId = e.target.dataset.id;
+            const newQty = parseInt(e.target.value) || 0;
+            e.target.placeholder = newQty;
+            updateQty(productId, newQty);
+            drawCheckoutInfo();
+            drawCartList();
+        }
+
+        // const prodTotal = document
+        //     .getElementById(productId)
+        //     .querySelector('.prod-total-text');
+        // prodTotal.innerText =
+        //     state.cartList[productId].price * state.cartList[productId].quantity;
     });
 
     // 전체 선택
