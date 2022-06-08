@@ -18,7 +18,30 @@ const selectProduct = (productId) => {
     }
 };
 
-const selectAllProduct = () => {};
+const selectAllProduct = (checkState) => {
+    if (checkState) {
+        Object.keys(state.cartList).forEach((productId) => {
+            const targetProduct = state.cartList[productId];
+
+            if (!targetProduct.checked) {
+                targetProduct.checked = true;
+                state.quantity += targetProduct.quantity;
+                state.total += targetProduct.price * targetProduct.quantity;
+            }
+        });
+    } else {
+        Object.keys(state.cartList).forEach((productId) => {
+            const targetProduct = state.cartList[productId];
+
+            if (targetProduct.checked) {
+                targetProduct.checked = false;
+                state.quantity -= targetProduct.quantity;
+                state.total -= targetProduct.price * targetProduct.quantity;
+            }
+        });
+    }
+    localStorage.setItem('cart', JSON.stringify(state.cartList));
+};
 
 const updateQty = (productId, newQty) => {
     const targetProduct = state.cartList[productId];

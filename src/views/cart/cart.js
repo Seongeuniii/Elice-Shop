@@ -63,7 +63,6 @@ const setEvents = () => {
             //     state.cartList[productId].price * state.cartList[productId].quantity;
         } else if (e.target.classList.contains('select-btn')) {
             const productId = e.target.dataset.id;
-            console.log(productId);
             selectProduct(productId);
             drawCartList();
             drawCheckoutInfo();
@@ -71,17 +70,11 @@ const setEvents = () => {
     });
 
     // 전체 선택
-    ref.selectAllBtn.addEventListener('input', () => {
-        const selectBtns = document.querySelectorAll('.select-btn');
-        if (ref.selectAllBtn.checked) {
-            selectBtns.forEach(
-                (selectBtn) => !selectBtn.checked && selectBtn.click(),
-            );
-        } else {
-            selectBtns.forEach(
-                (selectBtn) => selectBtn.checked && selectBtn.click(),
-            );
-        }
+    ref.selectAllBtn.addEventListener('input', (e) => {
+        const checkState = e.target.checked;
+        selectAllProduct(checkState);
+        drawCartList();
+        drawCheckoutInfo();
     });
 
     // 선택 삭제
