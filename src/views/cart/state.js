@@ -5,7 +5,18 @@ const state = {
     total: 0,
 };
 
-const selectProduct = () => {};
+const selectProduct = (productId) => {
+    const targetProduct = state.cartList[productId];
+    if (targetProduct.checked) {
+        targetProduct.checked = false;
+        state.quantity -= targetProduct.quantity;
+        state.total -= targetProduct.price * targetProduct.quantity;
+    } else {
+        targetProduct.checked = true;
+        state.quantity += targetProduct.quantity;
+        state.total += targetProduct.price * targetProduct.quantity;
+    }
+};
 
 const selectAllProduct = () => {};
 
@@ -76,4 +87,12 @@ const initState = async () => {
     }
 };
 
-export { state, updateQty, deleteProduct, deleteAllProduct, initState };
+export {
+    state,
+    selectProduct,
+    selectAllProduct,
+    updateQty,
+    deleteProduct,
+    deleteAllProduct,
+    initState,
+};

@@ -3,6 +3,8 @@ import { productLayout } from './component.js';
 
 import {
     state,
+    selectProduct,
+    selectAllProduct,
     updateQty,
     deleteProduct,
     deleteAllProduct,
@@ -41,8 +43,6 @@ const setEvents = () => {
             deleteProduct(productId);
             drawCartList();
             drawCheckoutInfo();
-
-            // ref.cartContainer.removeChild(document.getElementById(productId));
         }
     });
 
@@ -53,15 +53,21 @@ const setEvents = () => {
             const newQty = parseInt(e.target.value) || 0;
             e.target.placeholder = newQty;
             updateQty(productId, newQty);
-            drawCheckoutInfo();
             drawCartList();
-        }
+            drawCheckoutInfo();
 
-        // const prodTotal = document
-        //     .getElementById(productId)
-        //     .querySelector('.prod-total-text');
-        // prodTotal.innerText =
-        //     state.cartList[productId].price * state.cartList[productId].quantity;
+            // const prodTotal = document
+            //     .getElementById(productId)
+            //     .querySelector('.prod-total-text');
+            // prodTotal.innerText =
+            //     state.cartList[productId].price * state.cartList[productId].quantity;
+        } else if (e.target.classList.contains('select-btn')) {
+            const productId = e.target.dataset.id;
+            console.log(productId);
+            selectProduct(productId);
+            drawCartList();
+            drawCheckoutInfo();
+        }
     });
 
     // 전체 선택
