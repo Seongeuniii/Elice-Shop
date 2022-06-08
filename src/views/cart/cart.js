@@ -40,6 +40,7 @@ const setEvents = () => {
     ref.cartContainer.addEventListener('click', (e) => {
         if (e.target.classList.contains('remove')) {
             const productId = e.target.dataset.id;
+
             deleteProduct(productId);
             drawCartList();
             drawCheckoutInfo();
@@ -52,17 +53,13 @@ const setEvents = () => {
             const productId = e.target.dataset.id;
             const newQty = parseInt(e.target.value) || 0;
             e.target.placeholder = newQty;
+
             updateQty(productId, newQty);
             drawCartList();
             drawCheckoutInfo();
-
-            // const prodTotal = document
-            //     .getElementById(productId)
-            //     .querySelector('.prod-total-text');
-            // prodTotal.innerText =
-            //     state.cartList[productId].price * state.cartList[productId].quantity;
         } else if (e.target.classList.contains('select-btn')) {
             const productId = e.target.dataset.id;
+
             selectProduct(productId);
             drawCartList();
             drawCheckoutInfo();
@@ -72,6 +69,7 @@ const setEvents = () => {
     // 전체 선택
     ref.selectAllBtn.addEventListener('input', (e) => {
         const checkState = e.target.checked;
+
         selectAllProduct(checkState);
         drawCartList();
         drawCheckoutInfo();
@@ -85,16 +83,16 @@ const setEvents = () => {
     });
 
     // 결제 버튼
-    ref.checkoutBtn.addEventListener('click', (e) => {
-        const allProductUI = Array.from(document.querySelectorAll('.items'));
-        const cart = JSON.parse(localStorage.getItem('cart'));
-        const selectedProduct = allProductUI.reduce((prev, productUI) => {
-            const selectBtn = productUI.querySelector('.select-btn');
-            if (selectBtn.checked) {
-                prev[productUI.id] = cart[productUI.id];
-            }
-            return prev;
-        }, {});
+    ref.checkoutBtn.addEventListener('click', () => {
+        const selectedProduct = Object.keys(state.cartList).reduce(
+            (prev, productId) => {
+                if (state.cartList[productId].checked) {
+                    prev[productId] = state.cartList[productId];
+                    return prev;
+                }
+            },
+            {},
+        );
         if (!Object.keys(selectedProduct).length) {
             e.preventDefault();
             alert('장바구니에 담긴 상품이 없습니다.');
