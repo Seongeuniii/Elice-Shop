@@ -1,4 +1,4 @@
-import { navTransition } from '../../../shopping-mall-cart/src/views/nav-transition/nav-transition.js';
+// import { navTransition } from '../../../shopping-mall-cart/src/views/nav-transition/nav-transition.js';
 import { productLayout } from './component.js';
 
 import {
@@ -17,13 +17,16 @@ const ref = {
 };
 
 const drawCartList = () => {
-    Object.keys(state.cartList).forEach((productId) => {
-        const productUI = productLayout(
-            state.productInfo[productId],
-            state.cartList[productId],
-        );
-        ref.cartContainer.appendChild(productUI);
-    });
+    const productDom = Object.keys(state.cartList).reduce(
+        (prev, productId) =>
+            prev +
+            productLayout(
+                state.productInfo[productId],
+                state.cartList[productId],
+            ),
+        '',
+    );
+    ref.cartContainer.innerHTML = productDom;
 };
 
 const setEvents = () => {
@@ -74,7 +77,7 @@ const setEvents = () => {
 };
 
 const render = () => {
-    navTransition('cart');
+    // navTransition('cart');
     drawCartList();
 };
 

@@ -29,25 +29,22 @@ const requestProductInfo = async () => {
     return await res.json();
 };
 
-const createProductInfoMap = (productList) => {
-    return productList.reduce((prev, curr) => {
+const createMap = (arr) => {
+    return arr.reduce((prev, curr) => {
         prev[curr._id] = curr;
+        return prev;
     }, {});
 };
 
-const init = () => {
+const init = async () => {
     const cartListFromLocalStorage = JSON.parse(localStorage.getItem('cart'));
 
     if (cartListFromLocalStorage) {
         state.cartList = cartListFromLocalStorage;
-        state.productInfo = createProductInfoMap(requestProductInfo());
+
+        const productInfo = await requestProductInfo();
+        state.productInfo = createMap(productInfo);
     }
 };
 
-export default {
-    state,
-    updateQty,
-    deleteProduct,
-    deleteAllProduct,
-    init,
-};
+export { state, updateQty, deleteProduct, deleteAllProduct, init };
