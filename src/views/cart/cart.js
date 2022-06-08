@@ -53,38 +53,26 @@ const setEvents = () => {
         if (e.target.classList.contains('qty')) {
             const productId = e.target.dataset.id;
             const newQty = parseInt(e.target.value) || 0;
-            e.target.placeholder = newQty;
-
             updateQty(productId, newQty);
-
-            drawCartList();
-            drawCheckoutInfo();
+            render();
         } else if (e.target.classList.contains('select-btn')) {
             const productId = e.target.dataset.id;
-
             selectProduct(productId);
-
-            drawCartList();
-            drawCheckoutInfo();
+            render();
         }
     });
 
     // 전체 선택
     ref.selectAllBtn.addEventListener('input', (e) => {
         const checkState = e.target.checked;
-
         selectAllProduct(checkState);
-
-        drawCartList();
-        drawCheckoutInfo();
+        render();
     });
 
     // 선택 삭제
     ref.deleteSelectedBtn.addEventListener('click', () => {
         deleteSelectedProduct();
-
-        drawCartList();
-        drawCheckoutInfo();
+        render();
     });
 
     // 결제 버튼
@@ -110,11 +98,11 @@ const setEvents = () => {
 };
 
 const render = () => {
-    // navTransition('cart');
     drawCartList();
     drawCheckoutInfo();
 };
 
+// navTransition('cart');
 initState()
     .then(() => render())
     .then(() => setEvents());
