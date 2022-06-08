@@ -7,7 +7,7 @@ import {
     selectAllProduct,
     updateQty,
     deleteProduct,
-    deleteAllProduct,
+    deleteSelectedProduct,
     initState,
 } from './state.js';
 
@@ -79,14 +79,9 @@ const setEvents = () => {
 
     // 선택 삭제
     ref.deleteSelectedBtn.addEventListener('click', () => {
-        const productDomList = document.querySelectorAll('.items');
-        productDomList.forEach((productDom) => {
-            const selectBtn = productDom.querySelector('.select-btn');
-            const removeBtn = productDom.querySelector('.remove-btn');
-            if (selectBtn.checked) {
-                removeBtn.click();
-            }
-        });
+        deleteSelectedProduct();
+        drawCartList();
+        drawCheckoutInfo();
     });
 
     // 결제 버튼

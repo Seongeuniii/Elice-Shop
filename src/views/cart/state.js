@@ -16,6 +16,7 @@ const selectProduct = (productId) => {
         state.quantity += targetProduct.quantity;
         state.total += targetProduct.price * targetProduct.quantity;
     }
+    localStorage.setItem('cart', JSON.stringify(state.cartList));
 };
 
 const selectAllProduct = (checkState) => {
@@ -70,7 +71,18 @@ const deleteProduct = (productId) => {
     localStorage.setItem('cart', JSON.stringify(state.cartList));
 };
 
-const deleteAllProduct = () => {};
+const deleteSelectedProduct = () => {
+    Object.keys(state.cartList).forEach((productId) => {
+        const targetProduct = state.cartList[productId];
+
+        if (targetProduct.checked) {
+            delete state.cartList[productId];
+            state.quantity -= targetProduct.quantity;
+            state.total -= targetProduct.price * targetProduct.quantity;
+        }
+    });
+    localStorage.setItem('cart', JSON.stringify(state.cartList));
+};
 
 const requestProductInfo = async () => {
     const res = await fetch(`/api/products/cart`, {
@@ -116,6 +128,6 @@ export {
     selectAllProduct,
     updateQty,
     deleteProduct,
-    deleteAllProduct,
+    deleteSelectedProduct,
     initState,
 };
