@@ -1,18 +1,28 @@
-import Product from './product.js';
-import { navTransition } from '../nav-transition/nav-transition.js';
+import { navTransition } from '../../../shopping-mall-cart/src/views/nav-transition/nav-transition.js';
+import { productLayout } from './component.js';
+
+import {
+    state,
+    updateQty,
+    deleteProduct,
+    deleteAllProduct,
+    init,
+} from './state.js';
 
 const ref = {
-    cartContainer: document.querySelector('.cart'),
+    cartContainer: document.querySelector('.cart-container'),
     selectAllBtn: document.getElementById('select-all-product'),
     deleteSelectedBtn: document.getElementById('delete-selected-btn'),
     checkoutBtn: document.getElementById('checkout-btn'),
 };
 
-const drawCartList = (target, productList) => {
-    const cart = JSON.parse(localStorage.getItem('cart'));
-    productList.forEach((product, i) => {
-        const productUI = new Product(target, product, cart[product._id]);
-        target.appendChild(productUI.template(i));
+const drawCartList = () => {
+    Object.keys(state.cartList).forEach((productId) => {
+        const productUI = productLayout(
+            state.productInfo[productId],
+            state.cartList[productId],
+        );
+        ref.cartContainer.appendChild(productUI);
     });
 };
 
@@ -63,30 +73,11 @@ const setEvents = () => {
     });
 };
 
-const render = (productList) => {
+const render = () => {
     navTransition('cart');
-    drawCartList(ref.cartContainer, productList);
+    drawCartList();
 };
 
-const initialize = async () => {
-    const cart = JSON.parse(localStorage.getItem('cart'));
-
-    if (cart) {
-        const res = await fetch(`/api/products/cart`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                productIds: Object.keys(cart).map((key) => key),
-            }),
-        });
-        return await res.json();
-    } else {
-        return null;
-    }
-};
-
-initialize()
-    .then((cartList) => render(cartList))
+init()
+    .then(() => render())
     .then(() => setEvents());
