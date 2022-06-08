@@ -6,7 +6,7 @@ import {
     updateQty,
     deleteProduct,
     deleteAllProduct,
-    init,
+    initState,
 } from './state.js';
 
 const ref = {
@@ -31,11 +31,18 @@ const drawCartList = () => {
     ref.cartContainer.innerHTML = productDom;
 };
 
+const drawCheckoutInfo = () => {
+    ref.quantity.innerText = state.quantity;
+    ref.total.innerText = state.total;
+};
+
 const setEvents = () => {
     // 이벤트 위임
     ref.cartContainer.addEventListener('click', (e) => {
         if (e.target.classList.contains('remove')) {
-            deleteProduct(ref, e.target.dataset.id);
+            const productId = e.target.dataset.id;
+            deleteProduct(ref, productId);
+            ref.cartContainer.removeChild(document.getElementById(productId));
         }
     });
 
@@ -88,8 +95,9 @@ const setEvents = () => {
 const render = () => {
     // navTransition('cart');
     drawCartList();
+    drawCheckoutInfo();
 };
 
-init()
+initState()
     .then(() => render())
     .then(() => setEvents());

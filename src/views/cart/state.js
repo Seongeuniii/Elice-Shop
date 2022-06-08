@@ -1,7 +1,6 @@
 const state = {
     cartList: {},
     productInfo: {},
-    selectedProduct: [],
     quantity: 0,
     total: 0,
 };
@@ -12,23 +11,13 @@ const selectAllProduct = () => {};
 
 const updateQty = (productId, newQty) => {};
 
-const deleteProduct = (ref, productId) => {
-    const input = document
-        .getElementById(productId)
-        .querySelector('.select-btn');
-
-    if (input.checked) {
-        quantity.innerText =
-            parseInt(quantity.innerText) - this.userSelectInfo.quantity;
-        total.innerText =
-            parseInt(total.innerText) -
-            this.userSelectInfo.quantity * this.product.price;
+const deleteProduct = (productId) => {
+    if (cartList[productId][checked]) {
+        quantity -= cartList[productId].quantity;
+        total -= cartList[productId].total * cartList[productId].quantity;
     }
-
-    const cart = JSON.parse(localStorage.getItem('cart'));
-    delete cart[productId];
+    delete cartList[productId];
     localStorage.setItem('cart', JSON.stringify(cart));
-    ref.cartContainer.removeChild(document.getElementById(productId));
 };
 
 const deleteAllProduct = () => {};
@@ -46,22 +35,28 @@ const requestProductInfo = async () => {
     return await res.json();
 };
 
-const createMap = (arr) => {
+const createMap = (arr, key) => {
     return arr.reduce((prev, curr) => {
-        prev[curr._id] = curr;
+        prev[curr[key]] = curr;
         return prev;
     }, {});
 };
 
-const init = async () => {
+const initState = async () => {
     const cartListFromLocalStorage = JSON.parse(localStorage.getItem('cart'));
 
     if (cartListFromLocalStorage) {
         state.cartList = cartListFromLocalStorage;
-
         const productInfo = await requestProductInfo();
-        state.productInfo = createMap(productInfo);
+        state.productInfo = createMap(productInfo, '_id');
+        Object.keys(state.cartList).forEach((id) => {
+            if (state.cartList[id].checked) {
+                state.quantity += state.cartList[id].quantity;
+                state.total +=
+                    state.cartList[id].quantity * state.cartList[id].price;
+            }
+        });
     }
 };
 
-export { state, updateQty, deleteProduct, deleteAllProduct, init };
+export { state, updateQty, deleteProduct, deleteAllProduct, initState };
