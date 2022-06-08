@@ -2,7 +2,11 @@ const productLayout = (productInfo, userAddToCart) => {
     return `
         <li class="items" id=${productInfo._id}>
             <div class="infoWrap">
-                <input type="checkbox" class="select-btn"/>
+                ${
+                    userAddToCart.checked
+                        ? '<input type=checkbox checked=true>'
+                        : '<input type=checkbox>'
+                }
                 <div class="cartSection">
                     <img src=${productInfo.img} alt="" class="itemImg" />
                     <h3>${productInfo.productName}</h3>
