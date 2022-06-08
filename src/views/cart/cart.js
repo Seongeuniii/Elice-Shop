@@ -42,6 +42,7 @@ const setEvents = () => {
             const productId = e.target.dataset.id;
 
             deleteProduct(productId);
+
             drawCartList();
             drawCheckoutInfo();
         }
@@ -55,12 +56,14 @@ const setEvents = () => {
             e.target.placeholder = newQty;
 
             updateQty(productId, newQty);
+
             drawCartList();
             drawCheckoutInfo();
         } else if (e.target.classList.contains('select-btn')) {
             const productId = e.target.dataset.id;
 
             selectProduct(productId);
+
             drawCartList();
             drawCheckoutInfo();
         }
@@ -71,6 +74,7 @@ const setEvents = () => {
         const checkState = e.target.checked;
 
         selectAllProduct(checkState);
+
         drawCartList();
         drawCheckoutInfo();
     });
@@ -78,21 +82,24 @@ const setEvents = () => {
     // 선택 삭제
     ref.deleteSelectedBtn.addEventListener('click', () => {
         deleteSelectedProduct();
+
         drawCartList();
         drawCheckoutInfo();
     });
 
     // 결제 버튼
-    ref.checkoutBtn.addEventListener('click', () => {
-        const selectedProduct = Object.keys(state.cartList).reduce(
-            (prev, productId) => {
-                if (state.cartList[productId].checked) {
-                    prev[productId] = state.cartList[productId];
+    ref.checkoutBtn.addEventListener('click', (e) => {
+        const selectedProduct =
+            Object.keys(state.cartList).reduce((prev, productId) => {
+                const targetProduct = state.cartList[productId];
+                console.log(targetProduct);
+                if (targetProduct.checked && targetProduct.quantity) {
+                    console.log('hi');
+                    prev[productId] = targetProduct;
                     return prev;
                 }
-            },
-            {},
-        );
+            }, {}) || {};
+
         if (!Object.keys(selectedProduct).length) {
             e.preventDefault();
             alert('장바구니에 담긴 상품이 없습니다.');
