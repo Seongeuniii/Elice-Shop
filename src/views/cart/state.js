@@ -12,7 +12,24 @@ const selectAllProduct = () => {};
 
 const updateQty = (productId, newQty) => {};
 
-const deleteProduct = (productId) => {};
+const deleteProduct = (ref, productId) => {
+    const input = document
+        .getElementById(productId)
+        .querySelector('.select-btn');
+
+    if (input.checked) {
+        quantity.innerText =
+            parseInt(quantity.innerText) - this.userSelectInfo.quantity;
+        total.innerText =
+            parseInt(total.innerText) -
+            this.userSelectInfo.quantity * this.product.price;
+    }
+
+    const cart = JSON.parse(localStorage.getItem('cart'));
+    delete cart[productId];
+    localStorage.setItem('cart', JSON.stringify(cart));
+    ref.cartContainer.removeChild(document.getElementById(productId));
+};
 
 const deleteAllProduct = () => {};
 

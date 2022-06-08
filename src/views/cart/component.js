@@ -22,8 +22,10 @@ const productLayout = (productInfo, userAddToCart) => {
                         productInfo.price * userAddToCart.quantity
                     }</p>
                 </div>
-                <div class="cartSection remove-btn">
-                <a href="#" class="remove">x</a>
+                <div class="cartSection remove-btn remove" data-id=${
+                    productInfo._id
+                }>
+                <a href="#" class="remove" data-id=${productInfo._id}>x</a>
                 </div>
             </div>
         </li>

@@ -13,6 +13,8 @@ const ref = {
     cartContainer: document.querySelector('.cart-container'),
     selectAllBtn: document.getElementById('select-all-product'),
     deleteSelectedBtn: document.getElementById('delete-selected-btn'),
+    quantity: document.getElementById('quantity'),
+    total: document.getElementById('total'),
     checkoutBtn: document.getElementById('checkout-btn'),
 };
 
@@ -30,6 +32,13 @@ const drawCartList = () => {
 };
 
 const setEvents = () => {
+    // 이벤트 위임
+    ref.cartContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('remove')) {
+            deleteProduct(ref, e.target.dataset.id);
+        }
+    });
+
     // 전체 선택
     ref.selectAllBtn.addEventListener('input', () => {
         const selectBtns = document.querySelectorAll('.select-btn');
