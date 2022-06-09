@@ -1,4 +1,4 @@
-// import { navTransition } from '../../../shopping-mall-cart/src/views/nav-transition/nav-transition.js';
+import drawNavbar from '../navbar/index.js';
 import { productLayout } from './component.js';
 
 import {
@@ -23,8 +23,7 @@ const ref = {
 const drawCartList = () => {
     const productDom = Object.keys(state.cartList).reduce(
         (prev, productId) =>
-            prev +
-            productLayout(state.productInfo[productId], state.cartList[productId]),
+            prev + productLayout(state.productInfo[productId], state.cartList[productId]),
         '',
     );
     ref.cartContainer.innerHTML = productDom;
@@ -102,7 +101,7 @@ const render = () => {
     drawCheckoutInfo();
 };
 
-// navTransition('cart');
+drawNavbar('cart');
 initState()
     .then(() => render())
     .then(() => setEvents());
