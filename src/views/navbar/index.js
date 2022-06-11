@@ -1,5 +1,3 @@
-import { checkLogin } from '../check-Account.js';
-
 const navContainer = document.querySelector('#navSelect');
 
 const linkTag = {
@@ -27,9 +25,7 @@ const insertDOM = (dom) => {
     navContainer.insertAdjacentHTML('afterbegin', dom);
 };
 
-const drawNavbar = async (page) => {
-    const { isAdmin, isLogined } = await checkLogin();
-
+const drawNavbar = async (page, isLogined, isAdmin) => {
     if (isLogined) {
         if (isAdmin) {
             switch (page) {
