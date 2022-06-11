@@ -1,4 +1,4 @@
-import { checkLogin } from '../check-login.js';
+import { checkLogin } from '../check-Account.js';
 
 const navContainer = document.querySelector('#navSelect');
 
