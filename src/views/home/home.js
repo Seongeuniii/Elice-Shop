@@ -1,3 +1,4 @@
+import { checkAccount } from '../check-account.js';
 import drawNavbar from '../navbar/index.js';
 import { productLayout, categoryLayout, modalLayout } from './component.js';
 import { state, resetCategory, requestProduct, initState } from './state.js';
@@ -83,6 +84,13 @@ const setTarget = (productDom) => {
 };
 
 const setEvents = () => {
+    // 뒤로가기 : 장바구니 카운트 리렌더링
+    window.onpageshow = function (event) {
+        if (event.persisted || window.performance) {
+            drawCartCount();
+        }
+    };
+
     // 이벤트 위임 : 카테고리 선택
     category.addEventListener('click', (e) => {
         if (e.target.classList.contains('category-btn')) {
@@ -90,23 +98,17 @@ const setEvents = () => {
             drawProductList();
         }
     });
-
-    // 뒤로가기 -> 장바구니 카운트 리렌더링
-    window.onpageshow = function (event) {
-        if (event.persisted || window.performance) {
-            drawCartCount(ref.cartCount);
-        }
-    };
 };
 
 const render = () => {
-    drawNavbar('home');
     drawCartCount();
     drawBanner();
     drawCategoryList();
     drawProductList();
 };
 
-initState()
+checkAccount()
+    .then(({ isLogined, isAdmin }) => drawNavbar('home', isLogined, isAdmin))
+    .then(() => initState())
     .then(() => render())
     .then(() => setEvents());
