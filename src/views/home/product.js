@@ -31,9 +31,7 @@ export default class Product {
         const div = document.createElement('div');
         div.classList.add('modal-background');
         const sizeBtnList = this.product.size.reduce((prev, curr) => {
-            return (
-                prev + `<button class="size-btn" id=${curr}>${curr}</button>`
-            );
+            return prev + `<button class="size-btn" id=${curr}>${curr}</button>`;
         }, '');
         div.innerHTML = `        
             <div class="modal-box">

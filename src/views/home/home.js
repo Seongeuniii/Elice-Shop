@@ -1,5 +1,6 @@
-import Product from './product.js';
 import drawNavbar from '../navbar/index.js';
+import { productLayout, categoryLayout, modalLayout } from './component.js';
+import { state, initState } from './state.js';
 
 const ref = {
     categoryContainer: document.getElementById('category-container'),
@@ -7,17 +8,11 @@ const ref = {
     cartCount: document.getElementById('cart-count'),
 };
 
-const categoryList = ['All', 'Shoes', 'Clothes', 'Others'];
-let setCategory = '';
-let setPage = 1;
-let perPage = 20;
-
-const drawCartCount = (target) => {
-    const cart = JSON.parse(localStorage.getItem('cart'));
-    if (!cart) {
-        target.innerText = 0;
+const drawCartCount = () => {
+    if (!state.cartList) {
+        ref.cartCount.innerText = 0;
     } else {
-        target.innerText = Object.keys(cart).length;
+        ref.cartCount.innerText = Object.keys(state.cartList).length;
     }
 };
 
@@ -48,45 +43,44 @@ const drawBanner = () => {
     }, 2500);
 };
 
-const drawCategoryList = (target, categoryList) => {
-    const div = document.createElement('div');
-    div.id = 'category';
-    div.innerHTML = categoryList.reduce(
-        (prev, curr) =>
-            prev +
-            `<a href="#scroll-top"><button class="category-btn" id=${curr}>${curr}</button></a>`,
-        '',
-    );
-    target.appendChild(div);
+const drawCategoryList = () => {
+    ref.categoryContainer.innerHTML = categoryLayout(state.categoryList);
 };
 
-const drawProductList = (target, productList) => {
-    console.log(productList);
-    if (setPage === 1) target.innerHTML = '';
-    productList.forEach((p, i) => {
-        const product = new Product(p);
-        const productUI = product.template();
-        if (i === perPage - 1) {
-            const observer = new IntersectionObserver(
-                (entries, observer) => {
-                    if (entries[0].isIntersecting) {
-                        observer.unobserve(entries[0].target);
-                        getData();
-                    }
-                },
-                {
-                    root: null,
-                    rootMargin: '0px 0px 0px 0px',
-                    thredhold: 1,
-                },
-            );
-            observer.observe(productUI);
+const drawProductList = () => {
+    if (state.setPage === 1) ref.productContainer.innerHTML = '';
+
+    state.productList.forEach((product, idx) => {
+        const productDom = productLayout(product);
+
+        // infinite scroll target
+        if (idx == state.perPage - 1) {
+            setTarget(productDom);
         }
-        target.appendChild(productUI);
+
+        ref.productContainer.appendChild(productDom);
     });
 };
 
-const setEvent = () => {
+const setTarget = (productDom) => {
+    const observer = new IntersectionObserver(
+        (entries, observer) => {
+            if (entries[0].isIntersecting) {
+                observer.unobserve(entries[0].target);
+                console.log('hi');
+                getData();
+            }
+        },
+        {
+            root: null,
+            rootMargin: '0px 0px 0px 0px',
+            thredhold: 1,
+        },
+    );
+    observer.observe(productDom);
+};
+
+const setEvents = () => {
     // 카테고리 선택
     const category = document.getElementById('category');
     category.addEventListener('click', (e) => {
@@ -103,33 +97,14 @@ const setEvent = () => {
     };
 };
 
-const getData = async () => {
-    setPage += 1;
-    const res = await fetch(
-        `/api/products?category=${setCategory}&perPage=${perPage}&page=${setPage}`,
-    );
-    const data = await res.json();
-    drawProductList(ref.productContainer, data.productList);
-};
-
-const render = (productList) => {
+const render = () => {
     drawNavbar('home');
-    drawCartCount(ref.cartCount);
+    drawCartCount();
     drawBanner();
-    drawCategoryList(ref.categoryContainer, categoryList);
-    drawProductList(ref.productContainer, productList);
+    drawCategoryList();
+    drawProductList();
 };
 
-const Initialize = async (category) => {
-    setPage = 1;
-    setCategory = category;
-    const res = await fetch(
-        `/api/products?category=${setCategory}&perPage=${perPage}&page=${setPage}`,
-    );
-    const data = await res.json();
-    return data.productList;
-};
-
-Initialize('')
-    .then((productList) => render(productList))
-    .then(() => setEvent());
+initState()
+    .then(() => render())
+    .then(() => setEvents());
