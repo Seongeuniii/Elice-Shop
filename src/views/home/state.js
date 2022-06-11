@@ -2,9 +2,14 @@ const state = {
     categoryList: [],
     setCategory: '',
     cartList: {},
-    productList: [],
     setPage: 0,
     perPage: 20,
+};
+
+const resetCategory = (category) => {
+    state.setCategory = category;
+    state.setPage = 0;
+    state.productList = [];
 };
 
 const requestProduct = async () => {
@@ -23,9 +28,6 @@ const initState = async () => {
         state.cartList = cartListFromLocalStorage;
     }
     state.categoryList = ['All', 'Shoes', 'Clothes', 'Others'];
-    state.productList = await requestProduct();
-
-    console.log(state);
 };
 
-export { state, initState };
+export { state, resetCategory, requestProduct, initState };

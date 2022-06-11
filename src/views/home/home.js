@@ -1,6 +1,6 @@
 import drawNavbar from '../navbar/index.js';
 import { productLayout, categoryLayout, modalLayout } from './component.js';
-import { state, initState } from './state.js';
+import { state, resetCategory, requestProduct, initState } from './state.js';
 
 const ref = {
     categoryContainer: document.getElementById('category-container'),
@@ -47,10 +47,12 @@ const drawCategoryList = () => {
     ref.categoryContainer.innerHTML = categoryLayout(state.categoryList);
 };
 
-const drawProductList = () => {
+const drawProductList = async () => {
+    const productList = await requestProduct();
+
     if (state.setPage === 1) ref.productContainer.innerHTML = '';
 
-    state.productList.forEach((product, idx) => {
+    productList.forEach((product, idx) => {
         const productDom = productLayout(product);
 
         // infinite scroll target
@@ -81,12 +83,13 @@ const setTarget = (productDom) => {
 };
 
 const setEvents = () => {
-    // 카테고리 선택
+    // 이벤트 위임 : 카테고리 선택
     const category = document.getElementById('category');
     category.addEventListener('click', (e) => {
-        Initialize(e.target.id).then((productList) =>
-            drawProductList(ref.productContainer, productList),
-        );
+        if (e.target.classList.contains('category-btn')) {
+            resetCategory(e.target.id);
+            drawProductList();
+        }
     });
 
     // 뒤로가기 -> 장바구니 카운트 리렌더링
