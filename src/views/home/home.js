@@ -84,7 +84,6 @@ const setTarget = (productDom) => {
 
 const setEvents = () => {
     // 이벤트 위임 : 카테고리 선택
-    const category = document.getElementById('category');
     category.addEventListener('click', (e) => {
         if (e.target.classList.contains('category-btn')) {
             resetCategory(e.target.id);

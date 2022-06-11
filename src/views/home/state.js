@@ -1,5 +1,5 @@
 const state = {
-    categoryList: [],
+    categoryList: ['All', 'Shoes', 'Clothes', 'Others'],
     setCategory: '',
     cartList: {},
     setPage: 0,
@@ -27,7 +27,6 @@ const initState = async () => {
     if (cartListFromLocalStorage) {
         state.cartList = cartListFromLocalStorage;
     }
-    state.categoryList = ['All', 'Shoes', 'Clothes', 'Others'];
 };
 
 export { state, resetCategory, requestProduct, initState };
