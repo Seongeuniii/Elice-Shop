@@ -40,11 +40,8 @@ const setEvents = () => {
     ref.cartContainer.addEventListener('click', (e) => {
         if (e.target.classList.contains('remove')) {
             const productId = e.target.dataset.id;
-
             deleteProduct(productId);
-
-            drawCartList();
-            drawCheckoutInfo();
+            render();
         }
     });
 
