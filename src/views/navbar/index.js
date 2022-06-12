@@ -1,5 +1,3 @@
-import { checkAccount } from '../check-account';
-
 const linkTag = {
     login: '<li><a href="/login" style="color: black">Login</a></li>',
     logout: '<li><a href="/" id="logout" style="color: black">Logout</a></li>',
