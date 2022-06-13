@@ -51,6 +51,7 @@ const insertDOM = (target, dom) => {
 };
 
 const drawNavbar = (page, isLogined, isAdmin) => {
+    console.log(page, isLogined, isAdmin);
     const navContainer = document.querySelector('#navSelect');
     const navDom = makeDOM(page, isLogined, isAdmin);
     insertDOM(navContainer, navDom);
@@ -81,12 +82,3 @@ export default drawNavbar;
 //         window.location.href = '/';
 //     }
 // });
-
-// nav_logout;
-// import drawNavbar from './index.js';
-
-// const pageName = document.querySelector('script.nav_trans').id;
-
-// // 로그아웃한 유저
-
-// drawNavbar(pageName);
