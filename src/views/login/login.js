@@ -1,5 +1,9 @@
-import * as Api from '/api.js';
-import { validateEmail } from '/useful-functions.js';
+import * as Api from '../api.js';
+import { validateEmail } from '../useful-functions.js';
+import drawNavbar from '../navbar/index.js';
+import checkAccount from '../check-account.js';
+
+checkAccount().then(({ isLogined, isAdmin }) => drawNavbar('login', isLogined, isAdmin));
 
 // 요소(element), input 혹은 상수
 const emailInput = document.querySelector('#emailInput');
