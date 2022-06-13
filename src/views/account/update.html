@@ -5,15 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>IceKream</title>
-    <!-- 아이콘 -->
     <link rel="icon" type="image/png" sizes="16x16" href="/elice-rabbit.png" />
-    <!-- bulma css -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
     <link rel="stylesheet" href="./update.css" />
-    <!-- 폰트 어썸: 아이콘 -->
     <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
-    <!-- 커스텀 css, js -->
-    <script id="update" class="nav_trans" src="/nav-transition/nav_user.js" type="module"></script>
     <script src="./update.js" type="module"></script>
     <script src="./form-handler.js" type="module"></script>
 </head>
@@ -55,13 +50,13 @@
         <section class="user_update">
             <h1 class="user_update_title">프로필 수정</h1>
             <div class="user_update_table">
-                <div class="show_area" id="email_area">
+                <div class="info_box" id="email_area">
                     <div class="row">이메일</div>
                     <div class="current">
                         <div>현재 이메일</div>
                     </div>
                 </div>
-                <div class="show_area" id="name_area">
+                <div class="info_box" id="name_area">
                     <div class="row">이름</div>
                     <div class="current">
                         <div>현재 이름</div>
@@ -69,7 +64,6 @@
                     </div>
                 </div>
                 <div class="change_area hide" id="name">
-                    <!-- <div scope="row">이름</div> -->
                     <div>
                         <form id="name_form">
                             <div class="new_form">
@@ -79,7 +73,7 @@
                                     정보를 변경하려면 아래에 비밀번호를
                                     입력하세요.
                                 </legend>
-                                <input id="password_check_input" name="passwordCheck" type="password"
+                                <input class="password_check_input" name="passwordCheck" type="password"
                                     placeholder="********" />
                                 <div class="button_container">
                                     <button type="submit" id="change_name_btn">
@@ -93,7 +87,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="show_area" id="password_area">
+                <div class="info_box" id="password_area">
                     <div class="row">비밀번호</div>
                     <div class="current">
                         <div>현재 비밀번호</div>
@@ -128,7 +122,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="show_area" id="address_area">
+                <div class="info_box" id="address_area">
                     <div class="row">주소</div>
                     <div class="current">
                         <div>현재 주소</div>
@@ -148,7 +142,7 @@
                                     정보를 변경하려면 아래에 비밀번호를
                                     입력하세요.
                                 </legend>
-                                <input id="password_check_input" name="passwordCheck" type="password"
+                                <input class="password_check_input" name="passwordCheck" type="password"
                                     placeholder="********" />
                                 <div class="button_container">
                                     <button type="submit" id="change_address_btn">
@@ -162,7 +156,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="show_area" id="number_area">
+                <div class="info_box" id="number_area">
                     <div class="row">연락처</div>
                     <div class="current">
                         <div>현재 번호</div>
@@ -181,7 +175,7 @@
                                     정보를 변경하려면 아래에 비밀번호를
                                     입력하세요.
                                 </legend>
-                                <input id="password_check_input" name="passwordCheck" type="text"
+                                <input class="password_check_input" name="passwordCheck" type="text"
                                     placeholder="********" />
                                 <div class="button_container">
                                     <button type="submit" id="change_number_btn">
@@ -195,7 +189,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="show_area" id="withdraw_area">
+                <div class="info_box" id="withdraw_area">
                     <div class="row">회원 탈퇴</div>
                     <div class="current">
                         <div>탈퇴를 원하시면 옆 버튼을 눌러주세요.</div>
