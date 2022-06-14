@@ -52,6 +52,7 @@ const App = async () => {
     drawNavbar('update', isLogined, isAdmin);
     drawCartCount();
     fetchUserData();
+    setEvents();
 };
 
 App();
