@@ -5,16 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>IceKream</title>
-    <!-- 아이콘 -->
     <link rel="icon" type="image/png" sizes="16x16" href="/elice-rabbit.png" />
-    <!-- bulma css -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
     <link rel="stylesheet" href="account.css" />
-    <!-- 폰트 어썸: 아이콘 -->
     <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
-    <!-- 커스텀 css, js -->
-    <script id="account" class="nav_trans" src="/nav-transition/nav_user.js" type="module"></script>
-    <!-- <script src="account.js" type="module" defer></script> -->
+    <script src="./account.js" type="module"></script>
 </head>
 
 <body>
@@ -51,7 +46,6 @@
     </nav>
 
     <!-- 계정 관리 페이지 -->
-
     <main>
         <div class="account-header">마이 페이지</div>
         <div class="menu-container">
@@ -82,17 +76,6 @@
             </a>
         </div>
     </main>
-    <script>
-        const drawCartCount = (target) => {
-            const cart = JSON.parse(localStorage.getItem('cart'));
-            if (!cart) {
-                target.innerText = 0;
-            } else {
-                target.innerText = Object.keys(cart).length;
-            }
-        };
-        drawCartCount(document.getElementById('cart-count'))
-    </script>
 </body>
 
 </html>

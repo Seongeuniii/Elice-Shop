@@ -124,36 +124,25 @@ withdrawForm.addEventListener('formdata', async (e) => {
     }
 });
 
-async function fetchUserData() {
-    const domList = ['email', 'name', 'password', 'number', 'address'].map(
-        (e) => {
-            return document.querySelector(`#${e}_area div div`);
-        },
-    );
-    const [email, name, password, number, address] = [...domList];
+const fetchUserData = async () => {
+    const ref = {
+        email: document.querySelector('#email_area div div'),
+        name: document.querySelector('#name_area div div'),
+        password: document.querySelector('#password_area div div'),
+        number: document.querySelector('#number_area div div'),
+        address: document.querySelector('#address_area div div'),
+    };
     const userId = sessionStorage.getItem('userId');
 
-    try {
-        const data = await Api.get('/api/auth/', userId);
-        email.textContent = data.email;
-        name.textContent = data.fullName;
-        password.textContent = '변경하시려면 클릭하세요';
-        number.textContent = data.phoneNumber
-            ? data.phoneNumber
-            : '저장된 번호가 없습니다.';
-        address.textContent = `우편변호: ${
-            data?.address?.postalCode
-                ? String(data?.address?.postalCode)
-                : '저장된 우편번호가 없습니다'
-        }
-                                 주소: ${
-                                     data?.address?.address1
-                                         ? String(data?.address?.address1)
-                                         : '저장된 주소가 없습니다'
-                                 }`;
-    } catch (error) {
-        console.log(error);
-    }
-}
+    const data = await Api.get('/api/auth/', userId);
+
+    ref.email.textContent = data.email;
+    ref.name.textContent = data.fullName;
+    ref.password.textContent = '변경하시려면 클릭하세요';
+    ref.number.textContent = data.phoneNumber ? data.phoneNumber : '저장된 번호가 없습니다.';
+    ref.address.textContent = `
+        우편변호: ${data?.address?.postalCode ? String(data?.address?.postalCode) : '저장된 우편번호가 없습니다'}
+        주소: ${data?.address?.address1 ? String(data?.address?.address1) : '저장된 주소가 없습니다'}`;
+};
 
 export { fetchUserData, patchUserInfo };

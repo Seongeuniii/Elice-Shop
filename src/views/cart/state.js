@@ -19,8 +19,8 @@ const selectProduct = (productId) => {
     localStorage.setItem('cart', JSON.stringify(state.cartList));
 };
 
-const selectAllProduct = (checkState) => {
-    if (checkState) {
+const selectAllProduct = (checkOn) => {
+    if (checkOn) {
         Object.keys(state.cartList).forEach((productId) => {
             const targetProduct = state.cartList[productId];
 
@@ -115,8 +115,7 @@ const initState = async () => {
         Object.keys(state.cartList).forEach((id) => {
             if (state.cartList[id].checked) {
                 state.quantity += parseInt(state.cartList[id].quantity);
-                state.total +=
-                    state.cartList[id].quantity * state.cartList[id].price;
+                state.total += state.cartList[id].quantity * state.cartList[id].price;
             }
         });
     }
