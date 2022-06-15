@@ -35,71 +35,79 @@ const drawCheckoutInfo = () => {
 };
 
 const setEvents = () => {
-    // 이벤트 위임 : 삭제 버튼
-    ref.cartContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('remove')) {
-            const productId = e.target.dataset.id;
-            deleteProduct(productId);
+    const deleteHandler = (() => {
+        ref.cartContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove')) {
+                const productId = e.target.dataset.id;
+                deleteProduct(productId);
+                render();
+            }
+        });
+    })();
+
+    const changeQtyHandler = (() => {
+        ref.cartContainer.addEventListener('input', (e) => {
+            if (e.target.classList.contains('qty')) {
+                const productId = e.target.dataset.id;
+                const newQty = parseInt(e.target.value) || 0;
+                updateQty(productId, newQty);
+                render();
+            } else if (e.target.classList.contains('select-btn')) {
+                const productId = e.target.dataset.id;
+                selectProduct(productId);
+                render();
+            }
+        });
+    })();
+
+    const selectAllHandler = (() => {
+        ref.selectAllBtn.addEventListener('input', (e) => {
+            const checkState = e.target.checked;
+            selectAllProduct(checkState);
             render();
-        }
-    });
+        });
+    })();
 
-    // 이벤트 위임 : 수량 변경
-    ref.cartContainer.addEventListener('input', (e) => {
-        if (e.target.classList.contains('qty')) {
-            const productId = e.target.dataset.id;
-            const newQty = parseInt(e.target.value) || 0;
-            updateQty(productId, newQty);
+    const deleteSelectedHandler = (() => {
+        ref.deleteSelectedBtn.addEventListener('click', () => {
+            deleteSelectedProduct();
             render();
-        } else if (e.target.classList.contains('select-btn')) {
-            const productId = e.target.dataset.id;
-            selectProduct(productId);
-            render();
-        }
-    });
+        });
+    })();
 
-    // 전체 선택
-    ref.selectAllBtn.addEventListener('input', (e) => {
-        const checkState = e.target.checked;
-        selectAllProduct(checkState);
-        render();
-    });
+    const checkoutHandler = (() => {
+        ref.checkoutBtn.addEventListener('click', (e) => {
+            const selectedProduct =
+                Object.keys(state.cartList).reduce((prev, productId) => {
+                    const targetProduct = state.cartList[productId];
+                    if (targetProduct.checked && targetProduct.quantity) {
+                        prev[productId] = targetProduct;
+                        return prev;
+                    }
+                }, {}) ?? {};
 
-    // 선택 삭제
-    ref.deleteSelectedBtn.addEventListener('click', () => {
-        deleteSelectedProduct();
-        render();
-    });
-
-    // 결제 버튼
-    ref.checkoutBtn.addEventListener('click', (e) => {
-        const selectedProduct =
-            Object.keys(state.cartList).reduce((prev, productId) => {
-                const targetProduct = state.cartList[productId];
-                console.log(targetProduct);
-                if (targetProduct.checked && targetProduct.quantity) {
-                    console.log('hi');
-                    prev[productId] = targetProduct;
-                    return prev;
-                }
-            }, {}) || {};
-
-        if (!Object.keys(selectedProduct).length) {
-            e.preventDefault();
-            alert('장바구니에 담긴 상품이 없습니다.');
-        } else {
-            localStorage.setItem('payment', JSON.stringify(selectedProduct));
-        }
-    });
+            if (!Object.keys(selectedProduct).length) {
+                e.preventDefault();
+                alert('장바구니에 담긴 상품이 없습니다.');
+            } else {
+                localStorage.setItem('payment', JSON.stringify(selectedProduct));
+            }
+        });
+    })();
 };
 
-const render = async () => {
+const render = () => {
     drawCartList();
     drawCheckoutInfo();
 };
 
-checkAccount()
-    .then(({ isLogined, isAdmin }) => drawNavbar('cart', isLogined, isAdmin))
-    .then(() => initState())
-    .then(() => render())
-    .then(() => setEvents());
+const App = async () => {
+    const { isLogined, isAdmin } = await checkAccount();
+    await initState();
+
+    drawNavbar('cart', isLogined, isAdmin);
+    render();
+    setEvents();
+};
+
+App();
