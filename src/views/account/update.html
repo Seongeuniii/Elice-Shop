@@ -14,8 +14,8 @@
     <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
     <!-- 커스텀 css, js -->
     <script id="update" class="nav_trans" src="/nav-transition/nav_user.js" type="module"></script>
-    <script src="update.js" type="module"></script>
-    <script src="form-handler.js" type="module"></script>
+    <script src="./update.js" type="module"></script>
+    <script src="./form-handler.js" type="module"></script>
 </head>
 
 <body>
@@ -225,17 +225,6 @@
             </div>
         </section>
     </div>
-    <script>
-        const drawCartCount = (target) => {
-            const cart = JSON.parse(localStorage.getItem('cart'));
-            if (!cart) {
-                target.innerText = 0;
-            } else {
-                target.innerText = Object.keys(cart).length;
-            }
-        };
-        drawCartCount(document.getElementById('cart-count'))
-    </script>
 </body>
 
 </html>

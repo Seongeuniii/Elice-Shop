@@ -31,4 +31,4 @@ async function checkAccount() {
     }
 }
 
-export { checkAccount };
+export default checkAccount;

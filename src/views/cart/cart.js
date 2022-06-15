@@ -1,4 +1,4 @@
-import { checkAccount } from '../check-account.js';
+import checkAccount from '../check-account.js';
 import drawNavbar from '../navbar/index.js';
 import { productLayout } from './component.js';
 
@@ -23,8 +23,7 @@ const ref = {
 
 const drawCartList = () => {
     const productDomList = Object.keys(state.cartList).reduce(
-        (prev, productId) =>
-            prev + productLayout(state.productInfo[productId], state.cartList[productId]),
+        (prev, productId) => prev + productLayout(state.productInfo[productId], state.cartList[productId]),
         '',
     );
     ref.cartContainer.innerHTML = productDomList;
